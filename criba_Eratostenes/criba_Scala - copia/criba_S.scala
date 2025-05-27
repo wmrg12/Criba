@@ -1,29 +1,32 @@
-// Criba de Eratóstenes en Scala con entrada por consola y salida de lista de primos
-
 import scala.io.StdIn.readInt
+import scala.collection.mutable.BitSet
 
 object CribaEratostenes {
   def criba(n: Int): Seq[Int] = {
-    val primos = Array.fill(n + 1)(true)
-    primos(0) = false
-    primos(1) = false
+    val primos = BitSet(2 to n: _*)  
 
-    for (i <- 2 to math.sqrt(n).toInt if primos(i)) {
+    for (i <- 2 to math.sqrt(n).toInt if primos.contains(i)) {
       for (j <- i * i to n by i) {
-        primos(j) = false
+        primos -= j  
       }
     }
 
-    primos.zipWithIndex.collect { case (true, i) => i }
+    primos.toSeq.sorted
   }
 
   def main(args: Array[String]): Unit = {
     println("Ingrese la cantidad:")
     val n = readInt()
+
+    val t1 = System.nanoTime()
     val resultado = criba(n)
+    val t2 = System.nanoTime()
+
+    val duracionSeg = (t2 - t1).toDouble / 1e9
 
     println(s"\nPrimos hasta $n: ${resultado.length} encontrados")
     println("Lista de primos:")
     println(resultado.mkString(", "))
+    println(f"\nTiempo de ejecución: $duracionSeg%.6f segundos")
   }
 }
