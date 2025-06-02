@@ -40,6 +40,12 @@ class SieveRunner
     puts "Ingrese la cantidad:"          # Solicita el límite superior al usuario
     n = gets.to_i                        # Lee y convierte la entrada a entero
 
+    # Validación adicional: se asegura que el número sea al menos 2 (ya que no hay primos menores a 2)
+    if n < 2
+      puts "⚠️  Error: Ingrese un número entero mayor o igual a 2 para ejecutar la criba."
+      return                             # Sale del método si el número no es válido
+    end
+
     sieve = EratosthenesSieve.new(n)     # Instancia del algoritmo con el valor ingresado
     memory_report = nil                  # Variable para almacenar el reporte de memoria
 
